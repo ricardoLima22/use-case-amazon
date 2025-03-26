@@ -2,6 +2,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import app.bronze as bronze
 import app.bronze_save_to_silver as bronzeToSilver
+import app.silver as silver
 
     
 def main():
@@ -16,9 +17,13 @@ def main():
 
     path_doc_bronze = r".\arqbronze\*"
 
-    teste = bronzeToSilver.selectColumn(spark)
-    teste.transformselect(path_doc_bronze)
+    select_bronze_to_silver = bronzeToSilver.selectColumn(spark)
+    select_bronze_to_silver.transformselect(path_doc_bronze)
 
+    path_doc_silver = r".\arqSilver\*"
+
+    processando_arquivo_silver = silver.loadSilver(spark)
+    processando_arquivo_silver.loadSilver(path_doc_silver)
 
 if __name__ == "__main__":
     main()
